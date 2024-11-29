@@ -1,0 +1,26 @@
+.content-container{
+    background-color: rgb(39, 45, 53);
+    display: grid;
+    color: #e9ecef;
+    flex-direction: column;
+    row-gap: 30px;
+    justify-content: left;
+    justify-items: self-start;
+    align-content: baseline;
+    width: 10rem;
+}
+.postList{
+    display: flex;
+    flex-direction: column;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+.post{
+    background-color:rgb(51, 57, 66);
+    padding: 18px 30rem 18px 18px;
+    margin: 18px;
+    border-radius: 10px;
+    width: 150%;
+
+}
