@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/styles.css">
+  <title>Vehicle Search</title>
+</head>
+
+<body>
+
+  <nav>
+    <ul>
+      <a href="login">Login</a>
+      <a href="logout">Logout</a>
+      <a href="register">Register</a>
+      <a href="app">Application</a>
+    </ul>
+  </nav>
+
+  <div class="form">
+    <h1>Vehicle Search</h1>
+    <!-- Form to Submit Vehicle Registration Number -->
+    <form action="/vehicleSearch" method="POST">
+      <label for="registrationNumber">Enter Vehicle Registration:</label>
+      <input type="text" id="registrationNumber" name="registrationNumber" required>
+      <button type="submit">Search</button>
+    </form>
+  </div>
+  <!-- Display the results here -->
+  <h2>Vehicle Information:</h2>
+  <pre id="results"></pre>
+
+</body>
+
+</html>

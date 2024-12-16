@@ -2,10 +2,14 @@
   "dependencies": {
     "bootstrap": "^5.3.3",
     "cookie-parser": "^1.4.7",
+    "dotenv": "^16.4.7",
     "ejs": "^3.1.10",
     "express": "^4.21.1",
     "express-session": "^1.18.1",
     "express-sessions": "^1.0.6",
+    "follow-redirects": "^1.15.9",
+    "fs": "^0.0.1-security",
+    "mongoose": "^8.9.0",
     "node": "^18.20.5"
   }
 }
