@@ -1,16 +1,23 @@
 const mongoose=require('mongoose')
 const {Schema, model} = mongoose
 
-const userSchema= new Schema({
-    username: String,
-    password: String
-})
+const userSchema = new Schema({
+    username: { type: String, required: true },
+    password: { type: String, required: true },
+    vehicles: [
+      {
+        colour: { type: String },
+        engineSize: { type: Number },
+        registrationNumber: { type: String, unique: true },
+        make: { type: String },
+      },
+    ],
+  });
 
 const userData = model('Users', userSchema)
 
 async function newUser(username, password){
     let isUser=await findUser(username)
-    // console.log(isUser)
     if(!isUser){ // no user of that name exists
         const user={
             username:username, 
@@ -25,8 +32,6 @@ async function newUser(username, password){
     }
     return false
 }
-
-
 
 async function getUsers(){
     // return users
@@ -43,7 +48,6 @@ async function getUsers(){
 }
 
 async function findUser(userToFind){
-    // return users.find(user=>user.username==username)
     let user=null
     await userData.findOne({username:userToFind}).exec()
         .then(dataFromMongo=>{
@@ -55,7 +59,22 @@ async function findUser(userToFind){
     return user
 }
 
+async function saveVehicle(username, vehicleData){
+    try {
+    const user = await findUser(username);
 
+    if (!user) {
+      console.error('User not found');
+      return;
+    }
+
+    user.vehicles.push(vehicleData);
+    await user.save();
+    console.log('Vehicle added to user:', user);
+  } catch (err) {
+    console.error('Error adding vehicle:', err);
+  }
+}
 
 async function checkPassword(username, password){
     let user=await findUser(username)
@@ -69,5 +88,6 @@ module.exports={
     newUser,
     getUsers,
     findUser,
-    checkPassword
+    checkPassword,
+    saveVehicle
 }

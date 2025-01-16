@@ -10,7 +10,6 @@ require('dotenv').config()
 const mongoDBpassword = process.env.MONGODB_PASSWORD
 const myAppDBName = "WebApp"
 const connectionString = `mongodb+srv://iwanparsons:${mongoDBpassword}@cluster0.eiwh5.mongodb.net/${myAppDBName}?retryWrites=true&w=majority`
-
 mongoose.connect(connectionString)
 
 app.listen(3000, () => {
@@ -19,13 +18,10 @@ app.listen(3000, () => {
 
 app.use(express.static('public'))
 app.use(express.static(path.join(__dirname, 'public')));
-
-
 app.use(express.urlencoded({ extended: false }))
 
 const sessions = require('express-session')
 const cookieParser = require('cookie-parser')
-
 const threeMinutes = 3 * 60 * 1000
 
 app.use(sessions({
@@ -45,7 +41,6 @@ function checkLoggedIn(request, response, nextAction) {
       request.session.destroy()
       console.log('imposter get out')
       response.sendFile(path.join(__dirname, '/views', 'notloggedin.html'))
-
     }
   }
 }
@@ -61,6 +56,18 @@ app.get('/vehicleSearch', checkLoggedIn, (req, res) => {
 
 app.get('/app', checkLoggedIn, (req, ress)=>{
   response.sendFile(path.join(__dirname, '/views', 'search.html'))
+})
+
+app.post('/save', async (req,res)=>{
+  const vehicleData ={
+    make: req.body.make,
+    registrationNumber: req.body.reg,
+    engineSize: req.body.engSize,
+    colour: req.body.colour,
+  }
+  const user = req.session.user
+  users.saveVehicle(user, vehicleData)
+  res.sendFile(path.join(__dirname, '/views', 'search.html'))
 })
 
 app.post('/vehicleSearch', (req, res) => {
@@ -107,6 +114,13 @@ app.post('/vehicleSearch', (req, res) => {
             <div><strong>Make:</strong> ${updatedObject.make}</div>
             <div><strong>Colour:</strong> ${updatedObject.colour}</div>
             <div><strong>Engine Size:</strong> ${updatedObject.engineSize}</div>
+            <form action="/save" method="POST">
+              <button type="submit" name="saveVehicle">Save Vehicle</button>
+              <input type="hidden" name="reg" id="reg" value=${updatedObject.reg}>
+              <input type="hidden" name="make" id="make" value=${updatedObject.make}>
+              <input type="hidden" name="colour" id="colour" value=${updatedObject.colour}>
+              <input type="hidden" name="engSize" id="engSize" value=${updatedObject.engineSize}>
+            </form>
           </body>
         </html>
       `);  // Dynamically render each vehicle attribute on its own line
@@ -142,7 +156,6 @@ app.post('/login', async (request, response) => {
     response.sendFile(path.join(__dirname, '/views', 'notloggedin.html'))
   }
 })
-
 
 app.get('/logout', (request, response) => {
   response.sendFile(path.join(__dirname, '/views', 'logout.html'))

@@ -50,7 +50,7 @@ function dataHelper(data, object, callback) {
         callback(error, null); // Pass error to callback
       }
     });
-
+    
     res.on('error', function (error) {
       callback(error, null); // Pass request error to callback
     });
@@ -69,24 +69,6 @@ function blankObject() {
     engineSize: "",
   };
 }
-
-//add save function for saved vehicles
-
-
-// function addSearch(user, message){
-//     let newSearch={
-//         user: user,
-//         message: message,
-//         likes: 0,
-//         time: Date.now()
-//     }
-//     // postData.push(newPost)
-//     postData.create(newPost)
-//         .catch(err=>{
-//             console.log("error: "+err)
-//         })
-//     console.log(postData)
-// }
 
 module.exports={
     dataHelper,
