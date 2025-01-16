@@ -2,17 +2,6 @@ var https = require('follow-redirects').https;
 var fs = require('fs');
 require('dotenv').config()
 
-var options = {
-  method: 'POST',
-  hostname: 'driver-vehicle-licensing.api.gov.uk',
-  path: '/vehicle-enquiry/v1/vehicles',
-  headers: {
-    'x-api-key': process.env.API_KEY,
-    'Content-Type': 'application/json',
-  },
-  maxRedirects: 20,
-};
-
 // Options for the API request
 var options = {
   method: 'POST',
@@ -80,6 +69,8 @@ function blankObject() {
     engineSize: "",
   };
 }
+
+//add save function for saved vehicles
 
 
 // function addSearch(user, message){

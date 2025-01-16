@@ -50,11 +50,16 @@ function checkLoggedIn(request, response, nextAction) {
   }
 }
 
+//My Code
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 app.get('/vehicleSearch', checkLoggedIn, (req, res) => {
+  response.sendFile(path.join(__dirname, '/views', 'search.html'))
+})
+
+app.get('/app', checkLoggedIn, (req, ress)=>{
   response.sendFile(path.join(__dirname, '/views', 'search.html'))
 })
 
