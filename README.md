@@ -15,3 +15,12 @@ In the experiments folder are my prototype and experiments. For the VehicleSearc
 
 Submission point 2c
 for this submission point there is a multi page app in the root of the repo this app allows the user to login and register with accounts being stored in a database. The code for the user login and registration was lifted from in class examples made by Dave anything not marked with a comment that it is Dave's code outside of all the pages in the views folder other than search.html is my own work. To run the code all that is needed is to run `node index.js` in the terminal, for the search page use any reg number you would like but if not use LC62LHE. Not all the user pages are fully styled as they are not the ine that are frequently visited so the main pages are somewhat styled. For my web technologies I am still using the MExN stack as well as using the DVLA Open Data API to get the vehicle information. I encountered an issue with my API choice as it does not hold the vehivle model just the make so in order to fix this I need to find another API that I will have the required data to call to in order to get the model data.
+
+Submission Point 2d
+I am hosting my webapp on the hosting service glitch having linked the repo the webapp is in to the service. I had some versioning issues that made it so entering the required .env variables would cause an error in attempting to fix this issue the node install was broken with the subsequent errors fixed by removing the node_modules folder through the command line
+
+1. Implement ability to see saved vehicles in profile
+2. Build profile page
+3. Add main page with post feed
+4. Fix any errors caused by backend
+5. Fix frontend styling
