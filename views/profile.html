@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/styles.css">
+  <title>Profile</title>
+</head>
+
+<body>
+  <nav>
+    <ul>
+      <a href="login">Login</a>
+      <a href="logout">Logout</a>
+      <a href="register">Register</a>
+      <a href="app">Application</a>
+    </ul>
+  </nav>
+
+  <div class="accInfo">
+    <h1>Profile</h1>
+  </div>
+
+  <div class="userPosts">
+    <h2>Your Posts</h2>
+    <ul id="userPosts"></ul>
+  </div>
+  <script>
+    const userPosts = document.getElementById('userPosts')
+
+    fetch('/userposts')
+      .then(res => res.json())
+      .then(processData)
+
+    function processData(data) {
+      console.log("data: ", data)
+      userPosts.innerHTML = ""
+      data.posts.forEach(post => {
+        let div = document.createElement('div')
+        let make = document.createElement('p')
+        let colour = document.createElement('p')
+        let reg = document.createElement('p')
+        let engSize = document.createElement('p')
+        make.innerText = `Make: ${post.make}`
+        colour.innerText = `Colour: ${post.colour}`
+        reg.innerText = `Reg: ${post.registrationNumber}`
+        engSize.innerText = `Capacity: ${post.engineSize}`
+        div.appendChild(make)
+        div.appendChild(colour)
+        div.appendChild(reg)
+        div.appendChild(engSize)
+        userPosts.appendChild(div)
+      })
+    }
+  </script>
+
+  <div class="savedveh">
+    <h2>Saved Vehicles</h2>
+    <ul id="savedVehicles"></ul>
+  </div>
+  <script>
+    const savedVeh = document.getElementById('savedVehicles')
+
+    fetch('/getSaved')
+      .then(res => res.json())
+      .then(processData)
+
+    function processData(data) {
+      //console.log(data)
+      savedVeh.innerHTML = ""
+      data.vehicles.forEach(vehicle => {
+        let li = document.createElement('li')
+        let make = document.createElement('p')
+        let colour = document.createElement('p')
+        let reg = document.createElement('p')
+        let engSize = document.createElement('p')
+        make.innerText = `Make: ${vehicle.make}`
+        colour.innerText = `Colour: ${vehicle.colour}`
+        reg.innerText = `Reg: ${vehicle.registrationNumber}`
+        engSize.innerText = `Capacity: ${vehicle.engineSize}`
+        li.appendChild(make)
+        li.appendChild(colour)
+        li.appendChild(reg)
+        li.appendChild(engSize)
+        savedVeh.appendChild(li)
+      })
+    }
+  </script>
+</body>
+
+</html>

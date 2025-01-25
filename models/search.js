@@ -44,6 +44,7 @@ function dataHelper(data, object, callback) {
         object.engineSize = apiData.engineCapacity;
         object.reg = apiData.registrationNumber;
         object.make = apiData.make;
+        console.log(object)
 
         callback(null, object); // Pass the updated object to callback
       } catch (error) {

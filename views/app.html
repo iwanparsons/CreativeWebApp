@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <nav>
+        <ul>
+          <a href="login">Login</a>
+          <a href="logout">Logout</a>
+          <a href="register">Register</a>
+          <a href="app">Application</a>
+          <a href="profile">Profile</a>
+        </ul>
+      </nav>
+    <h4>Recent posts</h4>
+    <ul id="recent-posts"></ul>
+    <script>
+        const recentPosts=document.getElementById('recent-posts')
+
+        fetch('/getposts')
+            .then(response=>response.json())
+            .then(processData)
+
+        function processData(data){
+            console.log(data)
+            recentPosts.innerHTML=""
+            data.posts.forEach(post=>{
+                let li=document.createElement('li')
+                li.innerText=`${post.message} by user: ${post.user}`
+                recentPosts.appendChild(li)
+            })
+        }
+    </script>
+</body>
+</html>

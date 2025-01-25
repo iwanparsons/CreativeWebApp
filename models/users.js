@@ -76,6 +76,16 @@ async function saveVehicle(username, vehicleData){
   }
 }
 
+async function getSaved(username) {
+    let foundUser= null
+    await userData.find({username: username})
+        .then(mongoData=>{
+            foundUser=mongoData[0]
+            //console.log(foundUser)
+        })
+    return foundUser?foundUser.vehicles:null
+}
+
 async function checkPassword(username, password){
     let user=await findUser(username)
     if(user){
@@ -89,5 +99,6 @@ module.exports={
     getUsers,
     findUser,
     checkPassword,
-    saveVehicle
+    saveVehicle,
+    getSaved
 }

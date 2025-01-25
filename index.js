@@ -3,6 +3,7 @@ const app = express()
 const path = require('path')
 const search = require('./models/search.js')
 const users = require('./models/users.js')
+const posts = require('./models/posts.js')
 const mongoose = require('mongoose')
 require('dotenv').config()
 
@@ -34,7 +35,7 @@ app.use(sessions({
 //Dave's code
 function checkLoggedIn(request, response, nextAction) {
   if (request.session) {
-    if (request.session.username) {
+    if (request.session.user) {
       console.log('valid user, come on in')
       nextAction()
     } else {
@@ -51,11 +52,11 @@ app.get('/', (req, res) => {
 });
 
 app.get('/vehicleSearch', checkLoggedIn, (req, res) => {
-  response.sendFile(path.join(__dirname, '/views', 'search.html'))
+  res.sendFile(path.join(__dirname, '/views', 'search.html'))
 })
 
-app.get('/app', checkLoggedIn, (req, ress)=>{
-  response.sendFile(path.join(__dirname, '/views', 'search.html'))
+app.get('/app', checkLoggedIn, (req, res)=>{
+  res.sendFile(path.join(__dirname, '/views', 'search.html'))
 })
 
 app.post('/save', async (req,res)=>{
@@ -68,6 +69,17 @@ app.post('/save', async (req,res)=>{
   const user = req.session.user
   users.saveVehicle(user, vehicleData)
   res.sendFile(path.join(__dirname, '/views', 'search.html'))
+})
+
+app.post('/postVehicle', async (req,res)=>{
+  const messageData ={
+    make: req.body.make,
+    registrationNumber: req.body.reg,
+    engineSize: req.body.engSize,
+    colour: req.body.colour,
+  }
+  const user = req.session.user
+  posts.addNewPost(user, messageData)
 })
 
 app.post('/vehicleSearch', (req, res) => {
@@ -121,12 +133,34 @@ app.post('/vehicleSearch', (req, res) => {
               <input type="hidden" name="colour" id="colour" value=${updatedObject.colour}>
               <input type="hidden" name="engSize" id="engSize" value=${updatedObject.engineSize}>
             </form>
+              <form action="/postVehicle" method="POST">
+              <button type="submit" name="postVehicle">Post Vehicle</button>
+              <input type="hidden" name="reg" id="reg" value=${updatedObject.reg}>
+              <input type="hidden" name="make" id="make" value=${updatedObject.make}>
+              <input type="hidden" name="colour" id="colour" value=${updatedObject.colour}>
+              <input type="hidden" name="engSize" id="engSize" value=${updatedObject.engineSize}>
+            </form>
           </body>
         </html>
       `);  // Dynamically render each vehicle attribute on its own line
     }
   });
 });
+
+app.get('/profile', (req,res)=>{
+  res.sendFile(path.join(__dirname, '/views', 'profile.html'))
+})
+
+app.get('/getSaved', async (req,res)=>{
+  let retrievedVehs=await users.getSaved(req.session.user)
+  console.log(retrievedVehs)
+  res.json({vehicles: retrievedVehs})
+})
+
+app.get('/userposts', async (request, response)=>{
+  let retrievedPosts=await posts.getUserPosts(request.session.user)
+  response.json({posts: retrievedPosts})
+})
 
 //dave's code till end of file
 app.get('/login', (request, response) => {
