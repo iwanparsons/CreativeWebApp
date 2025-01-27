@@ -1,38 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles.css">
     <title>Document</title>
 </head>
+
 <body>
-    <nav>
-        <ul>
-          <a href="login">Login</a>
-          <a href="logout">Logout</a>
-          <a href="register">Register</a>
-          <a href="app">Application</a>
-          <a href="profile">Profile</a>
-        </ul>
-      </nav>
-    <h4>Recent posts</h4>
-    <ul id="recent-posts"></ul>
-    <script>
-        const recentPosts=document.getElementById('recent-posts')
+    <div class="bgImage"></div>
+    <div class="container">
+        <nav>
+            <ul>
+                <a href="login">Login</a>
+                <a href="logout">Logout</a>
+                <a href="register">Register</a>
+                <a href="app">Application</a>
+                <a href="search">Vehicle Search</a>
+                <a href="profile">Profile</a>
+            </ul>
+        </nav>
 
-        fetch('/getposts')
-            .then(response=>response.json())
-            .then(processData)
+        <h4>Recent posts</h4>
+        <div class="postList">
+            <ul id="recent-posts"></ul>
+            <script>
+                const recentPosts = document.getElementById('recent-posts')
 
-        function processData(data){
-            console.log(data)
-            recentPosts.innerHTML=""
-            data.posts.forEach(post=>{
-                let li=document.createElement('li')
-                li.innerText=`${post.message} by user: ${post.user}`
-                recentPosts.appendChild(li)
-            })
-        }
-    </script>
+                fetch('/getposts')
+                    .then(res => res.json())
+                    .then(processData)
+
+                function processData(data) {
+                    console.log(data)
+                    recentPosts.innerHTML = ""
+                    data.posts.forEach(post => {
+                        let div = document.createElement('div')
+                        div.className = "postCon"
+                        // div.innerHTML = make, colour, reg, engSize
+                        let div2 = document.createElement('div')
+                        div2.className = "messCon"
+                        let make = document.createElement('li')
+                        let colour = document.createElement('li')
+                        let reg = document.createElement('li')
+                        let engSize = document.createElement('li')
+                        let message = document.createElement('li')
+                        let br = document.createElement('br')
+                        make.innerText = `Make: ${post.make}`
+                        colour.innerText = `Colour: ${post.colour}`
+                        reg.innerText = `Reg: ${post.registrationNumber}`
+                        engSize.innerText = `Capacity: ${post.engineSize}`
+                        if (post.message != undefined) {
+                            message.innerText = `User Message: ${post.message}`
+                        } else {
+                            message.innerText = `No message given`
+                        }
+
+                        div.appendChild(make)
+                        div.appendChild(colour)
+                        div.appendChild(reg)
+                        div.appendChild(engSize)
+                        recentPosts.appendChild(div)
+                        recentPosts.appendChild(div2)
+                        div2.appendChild(message)
+                        recentPosts.appendChild(div2)
+                    })
+                }
+            </script>
+        </div>
+    </div>
 </body>
+
 </html>

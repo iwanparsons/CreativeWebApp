@@ -51,12 +51,18 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-app.get('/vehicleSearch', checkLoggedIn, (req, res) => {
+app.get('/search', checkLoggedIn, (req, res) => {
   res.sendFile(path.join(__dirname, '/views', 'search.html'))
 })
 
 app.get('/app', checkLoggedIn, (req, res)=>{
-  res.sendFile(path.join(__dirname, '/views', 'search.html'))
+  res.sendFile(path.join(__dirname, '/views', 'app.html'))
+})
+
+app.get('/getposts', async (req,res)=>{
+  let allPosts= await posts.getAllPosts()
+  console.log("Post: ",allPosts)
+  res.json({posts: allPosts})
 })
 
 app.post('/save', async (req,res)=>{
@@ -77,6 +83,7 @@ app.post('/postVehicle', async (req,res)=>{
     registrationNumber: req.body.reg,
     engineSize: req.body.engSize,
     colour: req.body.colour,
+    message: req.body.mes,
   }
   const user = req.session.user
   posts.addNewPost(user, messageData)
@@ -113,33 +120,41 @@ app.post('/vehicleSearch', (req, res) => {
               <h1>Vehicle Search</h1>
               <!-- Form to Submit Vehicle Registration Number -->
               <form action="/vehicleSearch" method="POST">
-                <label for="registrationNumber">Enter Vehicle Registration:</label>
+                <label for="registrationNumber">Enter Vehicle Registration</label>
                 <input type="text" id="registrationNumber" name="registrationNumber" required>
                 <button type="submit">Search</button>
               </form>
             </div>
     
-            <h2>Vehicle Information:</h2>
-    
-            <!-- Display each vehicle attribute on its own line -->
-            <div><strong>Reg:</strong> ${updatedObject.reg}</div>
-            <div><strong>Make:</strong> ${updatedObject.make}</div>
-            <div><strong>Colour:</strong> ${updatedObject.colour}</div>
-            <div><strong>Engine Size:</strong> ${updatedObject.engineSize}</div>
-            <form action="/save" method="POST">
-              <button type="submit" name="saveVehicle">Save Vehicle</button>
-              <input type="hidden" name="reg" id="reg" value=${updatedObject.reg}>
-              <input type="hidden" name="make" id="make" value=${updatedObject.make}>
-              <input type="hidden" name="colour" id="colour" value=${updatedObject.colour}>
-              <input type="hidden" name="engSize" id="engSize" value=${updatedObject.engineSize}>
-            </form>
-              <form action="/postVehicle" method="POST">
-              <button type="submit" name="postVehicle">Post Vehicle</button>
-              <input type="hidden" name="reg" id="reg" value=${updatedObject.reg}>
-              <input type="hidden" name="make" id="make" value=${updatedObject.make}>
-              <input type="hidden" name="colour" id="colour" value=${updatedObject.colour}>
-              <input type="hidden" name="engSize" id="engSize" value=${updatedObject.engineSize}>
-            </form>
+            <div class="vehInfo">
+              <h2>Vehicle Information:</h2>
+      
+              <!-- Display each vehicle attribute on its own line -->
+              <div><strong>Reg:</strong> ${updatedObject.reg}</div>
+              <div><strong>Make:</strong> ${updatedObject.make}</div>
+              <div><strong>Colour:</strong> ${updatedObject.colour}</div>
+              <div><strong>Engine Size:</strong> ${updatedObject.engineSize}</div>
+              <div>
+                <form action="/save" method="POST">
+                  <button type="submit" name="saveVehicle">Save Vehicle</button>
+                  <input type="hidden" name="reg" id="reg" value=${updatedObject.reg}>
+                  <input type="hidden" name="make" id="make" value=${updatedObject.make}>
+                  <input type="hidden" name="colour" id="colour" value=${updatedObject.colour}>
+                  <input type="hidden" name="engSize" id="engSize" value=${updatedObject.engineSize}>
+                </form>
+              </div>
+              <div class="form">
+                <form action="/postVehicle" method="POST">
+                <label for="mes">Enter post message</label>
+                <input type="text" name="mes" id="mes">
+                <button type="submit" name="postVehicle">Post Vehicle</button>
+                <input type="hidden" name="reg" id="reg" value=${updatedObject.reg}>
+                <input type="hidden" name="make" id="make" value=${updatedObject.make}>
+                <input type="hidden" name="colour" id="colour" value=${updatedObject.colour}>
+                <input type="hidden" name="engSize" id="engSize" value=${updatedObject.engineSize}>
+              </form>
+              </div>
+            </div>
           </body>
         </html>
       `);  // Dynamically render each vehicle attribute on its own line

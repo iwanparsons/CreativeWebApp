@@ -9,30 +9,33 @@
 </head>
 
 <body>
+  <div class="bgImage"></div>
+  <div class="container">
+    <nav>
+      <ul>
+        <a href="login">Login</a>
+        <a href="logout">Logout</a>
+        <a href="register">Register</a>
+        <a href="app">Application</a>
+        <a href="profile">Profile</a>
+      </ul>
+    </nav>
 
-  <nav>
-    <ul>
-      <a href="login">Login</a>
-      <a href="logout">Logout</a>
-      <a href="register">Register</a>
-      <a href="app">Application</a>
-      <a href="profile">Profile</a>
-    </ul>
-  </nav>
-
-  <div class="form">
-    <h1>Vehicle Search</h1>
-    <!-- Form to Submit Vehicle Registration Number -->
-    <form action="/vehicleSearch" method="POST">
-      <label for="registrationNumber">Enter Vehicle Registration:</label>
-      <input type="text" id="registrationNumber" name="registrationNumber" required>
-      <button type="submit">Search</button>
-    </form>
+    <div class="form">
+      <h1>Vehicle Search</h1>
+      <!-- Form to Submit Vehicle Registration Number -->
+      <form action="/vehicleSearch" method="POST">
+        <label for="registrationNumber">Enter Vehicle Registration:</label>
+        <input type="text" id="registrationNumber" name="registrationNumber" required>
+        <button type="submit">Search</button>
+      </form>
+    </div>
+    <!-- Display the results here -->
+    <div class="vehInfo">
+      <h2>Vehicle Information</h2>
+      <pre id="results"></pre>
+    </div>
   </div>
-  <!-- Display the results here -->
-  <h2>Vehicle Information:</h2>
-  <pre id="results"></pre>
-
 </body>
 
 </html>

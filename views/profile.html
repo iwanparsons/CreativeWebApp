@@ -9,84 +9,95 @@
 </head>
 
 <body>
-  <nav>
-    <ul>
-      <a href="login">Login</a>
-      <a href="logout">Logout</a>
-      <a href="register">Register</a>
-      <a href="app">Application</a>
-    </ul>
-  </nav>
-
-  <div class="accInfo">
+  <div class="bgImage"></div>
+  <div class="container">
+    <nav>
+      <ul>
+        <a href="login">Login</a>
+        <a href="logout">Logout</a>
+        <a href="register">Register</a>
+        <a href="app">Application</a>
+      </ul>
+    </nav>
     <h1>Profile</h1>
-  </div>
-
-  <div class="userPosts">
     <h2>Your Posts</h2>
-    <ul id="userPosts"></ul>
-  </div>
-  <script>
-    const userPosts = document.getElementById('userPosts')
+    <div class="userPosts">
+      <ul id="userPosts"></ul>
+      <script>
+        const userPosts = document.getElementById('userPosts')
 
-    fetch('/userposts')
-      .then(res => res.json())
-      .then(processData)
+        fetch('/userposts')
+          .then(res => res.json())
+          .then(processData)
 
-    function processData(data) {
-      console.log("data: ", data)
-      userPosts.innerHTML = ""
-      data.posts.forEach(post => {
-        let div = document.createElement('div')
-        let make = document.createElement('p')
-        let colour = document.createElement('p')
-        let reg = document.createElement('p')
-        let engSize = document.createElement('p')
-        make.innerText = `Make: ${post.make}`
-        colour.innerText = `Colour: ${post.colour}`
-        reg.innerText = `Reg: ${post.registrationNumber}`
-        engSize.innerText = `Capacity: ${post.engineSize}`
-        div.appendChild(make)
-        div.appendChild(colour)
-        div.appendChild(reg)
-        div.appendChild(engSize)
-        userPosts.appendChild(div)
-      })
-    }
-  </script>
-
-  <div class="savedveh">
+        function processData(data) {
+          console.log("data: ", data)
+          userPosts.innerHTML = ""
+          data.posts.forEach(post => {
+            let div = document.createElement('div')
+            div.className = "userCon"
+            let div2 = document.createElement('div')
+            div2.className = "messCon"
+            let make = document.createElement('li')
+            let colour = document.createElement('li')
+            let reg = document.createElement('li')
+            let engSize = document.createElement('li')
+            let message = document.createElement('li')
+            make.innerText = `Make: ${post.make}`
+            colour.innerText = `Colour: ${post.colour}`
+            reg.innerText = `Reg: ${post.registrationNumber}`
+            engSize.innerText = `Capacity: ${post.engineSize}`
+            if (post.message != undefined) {
+              message.innerText = `${post.message}`
+            } else {
+              message.innerText = `No message given`
+            }
+            div.appendChild(make)
+            div.appendChild(colour)
+            div.appendChild(reg)
+            div.appendChild(engSize)
+            userPosts.appendChild(div)
+            userPosts.appendChild(div2)
+            div2.appendChild(message)
+            userPosts.appendChild(div2)
+          })
+        }
+      </script>
+    </div>
     <h2>Saved Vehicles</h2>
-    <ul id="savedVehicles"></ul>
+    <div class="savedveh">
+      <ul id="savedVehicles"></ul>
+    </div>
+    <script>
+      const savedVeh = document.getElementById('savedVehicles')
+
+      fetch('/getSaved')
+        .then(res => res.json())
+        .then(processData)
+
+      function processData(data) {
+        //console.log(data)
+        savedVeh.innerHTML = ""
+        data.vehicles.forEach(vehicle => {
+          let div = document.createElement('div')
+          div.className = "savedCon"
+          let make = document.createElement('li')
+          let colour = document.createElement('li')
+          let reg = document.createElement('li')
+          let engSize = document.createElement('li')
+          make.innerText = `Make: ${vehicle.make}`
+          colour.innerText = `Colour: ${vehicle.colour}`
+          reg.innerText = `Reg: ${vehicle.registrationNumber}`
+          engSize.innerText = `Capacity: ${vehicle.engineSize}`
+          div.appendChild(make)
+          div.appendChild(colour)
+          div.appendChild(reg)
+          div.appendChild(engSize)
+          savedVeh.appendChild(div)
+        })
+      }
+    </script>
   </div>
-  <script>
-    const savedVeh = document.getElementById('savedVehicles')
-
-    fetch('/getSaved')
-      .then(res => res.json())
-      .then(processData)
-
-    function processData(data) {
-      //console.log(data)
-      savedVeh.innerHTML = ""
-      data.vehicles.forEach(vehicle => {
-        let li = document.createElement('li')
-        let make = document.createElement('p')
-        let colour = document.createElement('p')
-        let reg = document.createElement('p')
-        let engSize = document.createElement('p')
-        make.innerText = `Make: ${vehicle.make}`
-        colour.innerText = `Colour: ${vehicle.colour}`
-        reg.innerText = `Reg: ${vehicle.registrationNumber}`
-        engSize.innerText = `Capacity: ${vehicle.engineSize}`
-        li.appendChild(make)
-        li.appendChild(colour)
-        li.appendChild(reg)
-        li.appendChild(engSize)
-        savedVeh.appendChild(li)
-      })
-    }
-  </script>
 </body>
 
 </html>

@@ -3,11 +3,12 @@ const {Schema, model} = mongoose
 
 const postSchema=new Schema({
     user: String,
-    message: [{
+    post: [{
         colour: { type: String },
         engineSize: { type: Number },
-        registrationNumber: { type: String, unique: true },
+        registrationNumber: { type: String },
         make: { type: String },
+        message: {type: String},
     }],
     likes: Number,
     time: Date
@@ -16,15 +17,16 @@ const postSchema=new Schema({
 const postData=model('MyPosts', postSchema)
 
 
-function addNewPost(user, message){
-   console.log(message)
+function addNewPost(user, post){
+   console.log(post)
     let newPost={
         user: user,
-        message: [{
-            colour: message.colour,
-            engineSize: message.engineSize,
-            registrationNumber: message.registrationNumber,
-            make: message.make,
+        post: [{
+            colour: post.colour,
+            engineSize: post.engineSize,
+            registrationNumber: post.registrationNumber,
+            make: post.make,
+            message: post.message,
         }],
         likes: 0,
         time: Date.now()
@@ -37,13 +39,17 @@ function addNewPost(user, message){
     console.log("with post ",postData)
 }
 
-async function getAllPosts(){
-    let foundData=[]
-    postData.find({})
+async function getAllPosts(n=5){
+    let foundData=null
+    await postData.find({})
+        .sort({'time':-1})
+        .limit(n)
+        .exec()
         .then(mongoData=>{
-            foundData=mongoData
+            foundData=mongoData[0]
+            console.log("found data: ",foundData.post)
         })
-    return foundData
+    return foundData.post
 }
 
 async function getUserPosts(user){
@@ -53,18 +59,13 @@ async function getUserPosts(user){
             // console.log("posts.js found posts")
             // console.log(mongoData)
             foundData=mongoData[0]
-            console.log("found data: ",foundData.message)
+            console.log("found data: ",foundData.post)
         })
-    return foundData.message
-}
-
-function likePost(){
-
+    return foundData.post
 }
 
 module.exports={
     addNewPost,
     getAllPosts,
-    getUserPosts,
-    likePost
+    getUserPosts
 }
